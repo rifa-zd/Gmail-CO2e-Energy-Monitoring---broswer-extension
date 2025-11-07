@@ -45,13 +45,10 @@ Gmail Energy Monitor calculates the environmental impact of your email usage by 
 1. Go to "APIs & Services" > "Credentials" in the left sidebar
 2. Click "+ CREATE CREDENTIALS" at the top
 3. Select "OAuth client ID"
-4. If prompted, click "CONFIGURE CONSENT SCREEN" first:
+4. need tpo set "CONFIGURE CONSENT SCREEN" first
    - Choose "External" user type
    - Click "CREATE"
    - Fill in the required fields:
-     - App name: "Gmail Energy Monitor"
-     - User support email: Your email address
-     - Developer contact: Your email address
    - Click "SAVE AND CONTINUE"
    - On the Scopes page, click "ADD OR REMOVE SCOPES"
    - Search for "Gmail API" and select "https://www.googleapis.com/auth/gmail.readonly"
@@ -72,26 +69,6 @@ Gmail Energy Monitor calculates the environmental impact of your email usage by 
 4. Save the file
 
 ### Step 5: Load Extension in Chrome
-
-1. Open Chrome and navigate to `chrome://extensions/`
-2. Enable "Developer mode" (toggle in top right corner)
-3. Click "Load unpacked"
-4. Select the folder containing this project
-5. The extension should now appear in your extensions list
-
-### Step 6: First Use
-
-1. Click the Gmail Energy Monitor extension icon in Chrome
-2. Click "Login with Gmail"
-3. Authorize the extension to access your Gmail inbox (read-only)
-4. The extension will start collecting data and displaying statistics
-
-### Actions
-
-- **Refresh**: Manually fetch latest Gmail data
-- **Export CSV**: Download detailed emission history as CSV file
-- **Formula**: View calculation methodologies and data sources
-
 
 ## Data Storage
 
