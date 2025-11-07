@@ -143,12 +143,25 @@
           <div class="stat-card"><h3>Received</h3><p class="stat-value" id="receivedEmails">0</p></div>
           <div class="stat-card"><h3>Attachments</h3><p class="stat-value" id="totalAttachments">0</p></div>
           <div class="stat-card"><h3>Avg Size</h3><p class="stat-value" id="avgEmailSize">0 KB</p></div>
+          <div class="stat-card"><h3>Spam</h3><p class="stat-value" id="spamEmails">0</p></div>
+          <div class="stat-card"><h3>Spam Unread</h3><p class="stat-value" id="spamUnreadEmails">0</p></div>
+          <div class="stat-card"><h3>Spam Size</h3><p class="stat-value" id="spamSizeMB">0 MB</p></div>
+
         </div>
         <div class="breakdown">
           <p><strong>Total Data:</strong> <span id="totalData">0 MB</span></p>
           <p><strong>Largest:</strong> <span id="largestEmail">0 KB</span></p>
           <p><strong>Smallest:</strong> <span id="smallestEmail">0 KB</span></p>
         </div>
+        <div class="breakdown" style="margin-top: 16px; padding-top: 16px; border-top: 1px solid #eee;">
+        <h4 style="font-size: 13px; color: var(--green-dark); margin-bottom: 10px;">⚠️ Spam Impact</h4>
+        <p><strong>Spam CO2 Equivalent:</strong></p>
+        <div style="display: flex; gap: 12px; font-size: 11px;">
+          <span>📱 <span id="spamEquivPhone">0</span> phone charges</span>
+          <span>🚗 <span id="spamEquivCar">0</span> km driving</span>
+        </div>
+      </div>
+
       </div>
 
       <!-- Tips Tab -->
@@ -169,45 +182,81 @@
     <!-- Formula Tab -->
   <div id="formula" class="tab-content">
     <div class="formula-section">
-      <h3>📐 Calculation Formulas</h3>
-
+      <h3>Calculation Formulas</h3>
+    
+      <!-- CO2 Emissions Card -->
       <div class="formula-card">
         <h4>CO₂ Emissions (grams)</h4>
         <div class="formula-box">
-          CO₂ = (Emails × 4) + (Attachments × 50) + (Data MB × 3.5)
+          CO₂ (g) = [New Emails × 0.3] + [Attachment MB × 4.2] + [Stored GB × 30 ÷ 365]
         </div>
-        <p class="formula-source">Sources: Berners-Lee (2020), IEA, Google</p>
-      </div>
-
-      <div class="formula-card">
-        <h4>Energy Consumption (Watt-hours)</h4>
-        <div class="formula-box">
-          Energy = CO₂ × 1000 ÷ 475
-        </div>
-        <p class="formula-source">Based on global grid carbon intensity average</p>
-      </div>
-
-      <div class="formula-card">
-        <h4>Per Email Impact (milligrams)</h4>
-        <div class="formula-box">
-          Per Email = (Total CO₂ ÷ Total Emails) × 1000
-        </div>
-        <p class="formula-source">Average impact per email sent/received</p>
-      </div>
-
-      <div class="formula-card">
-        <h4>Real-World Equivalents</h4>
-        <ul class="equiv-list">
-          <li><strong>📱 Phone Charge:</strong> 8g CO₂ per full charge</li>
-          <li><strong>💡 LED Bulb (10W):</strong> 5.5g CO₂ per hour</li>
-          <li><strong>🚗 Car Driving:</strong> 170g CO₂ per kilometer (0.17g per meter)</li>
-          <li><strong>🌳 Tree Absorption:</strong> 0.046g CO₂ per minute</li>
+        
+        <ul class="equiv-list" style="margin: 8px 0;">
+          <li><strong>New Emails:</strong> 0.3g CO2e per email (transmission + device)</li>
+          <li><strong>Attachments:</strong> 4.2g CO2e per MB (data transmission + storage)</li>
+          <li><strong>Storage:</strong> 30g CO2e per GB per year (spread across 365 days)</li>
         </ul>
-        <p class="formula-source">Sources: EPA, European Environment Agency, MIT Climate Portal (2023-2025)</p>
+      </div>
+    
+      <!-- Energy Consumption Card - CORRECTED -->
+      <div class="formula-card">
+        <h4> Energy Consumption (Watt-hours)</h4>
+        <div class="formula-box">
+          Energy (Wh) = [CO₂ (g) ÷ 445] × 1,000
+        </div>
+        <p class="formula-source">
+          <strong>Explanation:</strong> 445 g CO2/kWh is the global grid carbon intensity (2024). 
+          Divide CO₂ by 445 to get kWh, then multiply by 1,000 to convert to Wh.
+        </p>
+      </div>
+    
+      <!-- Key Metrics Card -->
+      <div class="formula-card">
+        <h4>Key Metrics (2024-2025)</h4>
+        <ul class="equiv-list">
+          <li><strong>Email Transmission:</strong> 0.3g CO2e per email sent/received</li>
+          <li><strong>Attachment Data:</strong> 4.2g CO2e per MB</li>
+          <li><strong>Storage Cost:</strong> 30g CO2e per GB per year</li>
+          <li><strong>Grid Carbon Intensity:</strong> 445 g CO2/kWh (global average)</li>
+        </ul>
+        <p class="formula-source">
+          <strong>Sources:</strong> Berners-Lee (2020), Towards Data Science (2025), Greenly (2024), IEA (2024)
+        </p>
+      </div>
+    
+      <!-- Real-World Equivalents Card -->
+      <div class="formula-card">
+        <h4>Real-World CO₂ Equivalents (2024)</h4>
+        <ul class="equiv-list">
+          <li><strong>📱 Phone Charge (full):</strong> 8g CO2e</li>
+          <li><strong>💡 LED Bulb (10W, 1 hour):</strong> 4.45g CO2e</li>
+          <li><strong>🚗 Car Driving:</strong> 170g CO2e per kilometer</li>
+          <li><strong>🌳 Tree CO2 Absorption:</strong> 0.046g CO2e per minute</li>
+        </ul>
+        <p class="formula-source">
+          <strong>Sources:</strong> EPA (2024), IEA (2024), European Environment Agency
+        </p>
+      </div>
+
+      <div class="formula-card" style="background: #FFF3E0; border-left-color: #FF9800;">
+        <h4>Spam Emails - Do They Count?</h4>
+        <p class="formula-source">
+          Spam is fully included in  CO2 calculations. The energy was consumed when it arrived. Deleting it won't reduce past emissions, but unsubscribing prevents future ones.
+        </p>
+      </div>
+    
+      <!-- What Doesn't Affect Emissions -->
+      <div class="formula-card" style="background: #FFF3E0; border-left-color: #FF9800;">
+        <h4>⚠️ What DOESN'T Affect Emissions</h4>
+        <ul class="equiv-list">
+          <li><strong>Unread Status:</strong> Marking emails as read/unread uses no additional energy</li>
+          <li><strong>Trash Folders:</strong> Deleted emails DON'T reduce CO2 (energy already used when received)</li>
+          <li><strong>Moving Emails:</strong> Moving between folders doesn't affect emissions</li>
+        </ul>
       </div>
     </div>
-  </div>
 
+  </div>
 
   </div>
 
