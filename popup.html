@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gmail Energy Monitor</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="container">
+    <!-- Header -->
+    <div class="header">
+      <div class="header-content">
+        <h1>Gmail Energy Monitor</h1>
+      </div>
+      <div id="loading" class="loading" style="display:none;">Loading...</div>
+    </div>
+
+    <!-- Login Section -->
+    <div id="loginSection" class="login-section" style="display: none; flex: 1; padding: 40px 30px;">
+      <img src="images/icon48.png" alt="Logo" class="logo">
+
+      <h2>Track Your Email Footprint</h2>
+      <p>Authorize Gmail to begin monitoring energy & CO₂.</p>
+      <button id="loginBtn" class="btn btn-primary" style="box-shadow: 0 6px 16px rgba(88, 155, 84, 0.3); padding: 14px 36px; font-size: 15px;">Login with Gmail</button>
+    </div>
+
+
+    <!-- Main Section -->
+    <div id="mainSection" style="display: none;">
+          <div class="title-section">
+        <h2>What would you like to view?</h2>
+      </div>
+
+      <div class="button-group">
+        <button class="nav-btn" data-view="overview">Overview</button>
+        <button class="nav-btn" data-view="mailbox">Mailbox</button>
+        <button class="nav-btn" data-view="tips">Tips</button>
+      </div>
+
+      <div class="action-bar">
+        <button id="refreshBtn" class="btn btn-refresh">Refresh</button>
+        <button id="exportBtn" class="btn btn-export">Export CSV</button>
+        <button id="formulaBtn" class="btn btn-formula">Formula</button>
+      </div>
+
+      <!-- Overview Tab -->
+      <div id="overview" class="tab-content">
+        <!-- Today's Summary Cards -->
+         <h3 style="padding: 12px 20px 0; margin: 0; font-size: 14px; color: #666;">Today's Activity (Since Midnight)</h3>
+
+        <div class="today-cards">
+          <div class="today-card">
+            <h4>ENERGY</h4>
+            <p class="today-value" id="todayEnergy">0 Wh</p>
+          </div>
+          <div class="today-card">
+            <h4>CO₂</h4>
+            <p class="today-value" id="todayCO2">0 g</p>
+          </div>
+          <div class="today-card">
+            <h4>EMAILS</h4>
+            <p class="today-value" id="todayEmails">0</p>
+          </div>
+          <div class="today-card">
+            <h4>DATA</h4>
+            <p class="today-value" id="todayData">0 MB</p>
+          </div>
+        </div>
+        <!-- Today's Hourly Chart -->
+        <div class="chart-container">
+          <h3>Today (24 Hours) - Energy & CO₂</h3>
+          <div class="chart-box">
+            <canvas id="todayHourlyChart"></canvas>
+          </div>
+        </div>
+
+        <h3 style="padding: 12px 20px 0;">Weekly Trend - Energy & CO₂</h3>
+
+        <div class="kpi-grid">
+          <div class="kpi-card">
+            <h3>Avg CO₂ / Day</h3>
+            <p class="kpi-value" id="avgCO2Day">0 g</p>
+          </div>
+          <div class="kpi-card">
+            <h3>Weekly Energy</h3>
+            <p class="kpi-value" id="weeklyEnergy">0 Wh</p>
+          </div>
+        </div>
+
+        <!-- By Week Chart -->
+        <div class="chart-container" style="padding: 0px 5px 0;">
+           <h3>Weekly Trend - Energy & CO₂</h3>
+          <div class="chart-box">
+            <canvas id="dailyBarChart"></canvas>
+          </div>
+        </div>
+
+        <div class="kpi-card equivalent-card">
+          <h3>
+            Weekly Equivalent
+          </h3>
+          <p style="font-size: 10px; color: #F57F17; margin: 0 0 8px 0;">(Your 7-day CO₂ equals...)</p>
+          <div class="equivalent-list">
+            <div class="equiv-item">
+              <span class="equiv-icon">📱</span>
+              <span class="equiv-label">Phone charges</span>
+              <span class="equiv-value" id="equivPhone">0</span>
+            </div>
+            <div class="equiv-item">
+              <span class="equiv-icon">💡</span>
+              <span class="equiv-label">LED bulb hours</span>
+              <span class="equiv-value" id="equivLED">0 hrs</span>
+            </div>
+            <div class="equiv-item">
+              <span class="equiv-icon">🚗</span>
+              <span class="equiv-label">Car driving</span>
+              <span class="equiv-value" id="equivCar">0 m</span>
+            </div>
+            <div class="equiv-item">
+              <span class="equiv-icon">🌳</span>
+              <span class="equiv-label">Tree absorbs in</span>
+              <span class="equiv-value" id="equivTree">0 min</span>
+            </div>
+          </div>
+        </div>
+
+
+        <p id="limitWarning" class="limit-warning" style="display:none;">
+          Warning: >500 new emails – size stats partial
+        </p>
+      </div>
+
+      <!-- Mailbox Tab -->
+      <div id="mailbox" class="tab-content">
+        <p style="font-size: 12px; color: #666; margin: 12px 20px 0; font-style: italic; margin-bottom: 20px;">
+         Showing inbox activity since first login: <strong id="firstLoginDateMailbox">--</strong>
+      </p>
+        <div class="stats-grid">
+          <div class="stat-card"><h3>Total</h3><p class="stat-value" id="totalEmails">0</p></div>
+          <div class="stat-card"><h3>Unread</h3><p class="stat-value" id="unreadEmails">0</p></div>
+          <div class="stat-card"><h3>Sent</h3><p class="stat-value" id="sentEmails">0</p></div>
+          <div class="stat-card"><h3>Received</h3><p class="stat-value" id="receivedEmails">0</p></div>
+          <div class="stat-card"><h3>Attachments</h3><p class="stat-value" id="totalAttachments">0</p></div>
+          <div class="stat-card"><h3>Avg Size</h3><p class="stat-value" id="avgEmailSize">0 KB</p></div>
+        </div>
+        <div class="breakdown">
+          <p><strong>Total Data:</strong> <span id="totalData">0 MB</span></p>
+          <p><strong>Largest:</strong> <span id="largestEmail">0 KB</span></p>
+          <p><strong>Smallest:</strong> <span id="smallestEmail">0 KB</span></p>
+        </div>
+      </div>
+
+      <!-- Tips Tab -->
+      <div id="tips" class="tab-content">
+          <div class="tips-list" id="personalizedTips">
+              <!-- JS injection -->
+          </div>
+      </div>
+
+      <!-- Cumulative Chart -->
+      <div id="cumulativeSection" class="cumulative-section">
+         <h3>Cumulative Tracking</h3>
+         <canvas id="cumulativeChart"></canvas>
+         <p class="first-login" id="firstLoginLabel">First login: --</p>
+      </div>
+    </div>
+
+    <!-- Formula Tab -->
+  <div id="formula" class="tab-content">
+    <div class="formula-section">
+      <h3>📐 Calculation Formulas</h3>
+
+      <div class="formula-card">
+        <h4>CO₂ Emissions (grams)</h4>
+        <div class="formula-box">
+          CO₂ = (Emails × 4) + (Attachments × 50) + (Data MB × 3.5)
+        </div>
+        <p class="formula-source">Sources: Berners-Lee (2020), IEA, Google</p>
+      </div>
+
+      <div class="formula-card">
+        <h4>Energy Consumption (Watt-hours)</h4>
+        <div class="formula-box">
+          Energy = CO₂ × 1000 ÷ 475
+        </div>
+        <p class="formula-source">Based on global grid carbon intensity average</p>
+      </div>
+
+      <div class="formula-card">
+        <h4>Per Email Impact (milligrams)</h4>
+        <div class="formula-box">
+          Per Email = (Total CO₂ ÷ Total Emails) × 1000
+        </div>
+        <p class="formula-source">Average impact per email sent/received</p>
+      </div>
+
+      <div class="formula-card">
+        <h4>Real-World Equivalents</h4>
+        <ul class="equiv-list">
+          <li><strong>📱 Phone Charge:</strong> 8g CO₂ per full charge</li>
+          <li><strong>💡 LED Bulb (10W):</strong> 5.5g CO₂ per hour</li>
+          <li><strong>🚗 Car Driving:</strong> 170g CO₂ per kilometer (0.17g per meter)</li>
+          <li><strong>🌳 Tree Absorption:</strong> 0.046g CO₂ per minute</li>
+        </ul>
+        <p class="formula-source">Sources: EPA, European Environment Agency, MIT Climate Portal (2023-2025)</p>
+      </div>
+    </div>
+  </div>
+
+
+  </div>
+
+  <script src="chart.min.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

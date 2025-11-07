@@ -1,0 +1,41 @@
+{
+  "manifest_version": 3,
+  "name": "Gmail Energy Monitor",
+  "version": "1.0",
+  "description": "Track your Gmail carbon footprint with real data.",
+  "permissions": [
+    "identity",
+    "storage",
+    "alarms",
+    "downloads"
+  ],
+  "host_permissions": [
+    "https://www.googleapis.com/gmail/v1/*"
+  ],
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self';"
+  },
+  "oauth2": {
+    "client_id": "631165850383-bcek4ke5kqi63i30i1th6entf1q7ds59.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/gmail.readonly"
+    ]
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Gmail Energy Monitor",
+    "default_icon": {
+      "16": "images/icon16.png",
+      "48": "images/icon48.png",
+      "128": "images/icon128.png"
+    }
+  },
+  "background": {
+    "service_worker": "background.js"
+  },
+  "icons": {
+    "16": "images/icon16.png",
+    "48": "images/icon48.png",
+    "128": "images/icon128.png"
+  }
+}
